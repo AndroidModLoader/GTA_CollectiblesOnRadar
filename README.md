@@ -1,9 +1,5 @@
 [![AML Mod Compiler](https://github.com/AndroidModLoader/GTA_CollectiblesOnRadar/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/AndroidModLoader/GTA_CollectiblesOnRadar/actions/workflows/main.yml)
 
-# What am i?
-This is a port of a mod that tries to fix the appearance of Male01 (the model that is used when it's failed to load any other ped model).
-It doesnt fix it completely but works very well!
-
 Original author is kong78: https://github.com/kong78/collectibles-on-radar-gta-sa
 
 # Collectibles on Radar for GTA San Andreas 🗺️
