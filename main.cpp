@@ -473,11 +473,7 @@ extern "C" void OnAllModsLoaded()
     HOOKPLT(DrawRadarBlips, pGTASA + BYVER(0x66E910, 0x83DED0));
 
     InitializeConfigsPart();
-    if(sautils && aml->HasModOfVersion("net.rusjj.gtasa.utils", "1.5.1")) // That's how you can use AML interface
-                                                                          // If your mod can work without specified mod,
-                                                                          // save the result of this function and use it anywhere you need
-                                                                          // (if necessary). This line says "do we have a mod SAUtils of version equal 1.5.1 or newer"
-        InitializeSAUtilsPart();
+    if(sautils) InitializeSAUtilsPart();
 }
 
 static Config cfgLocal("CollectiblesOnRadar.SA");

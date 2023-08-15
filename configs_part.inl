@@ -133,16 +133,24 @@ void InitializeConfigsPart()
 
 void InitializeSAUtilsPart()
 {
-    eTypeOfSettings settingTab = sautils->AddSettingsTab("Collectibles On Radar");
-
     sautils->AddClickableItem(eTypeOfSettings::SetType_Mods, "Collectibles On Radar", cfgEnableMod->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_EnableMod);
-    sautils->AddClickableItem(settingTab, "Show Spray Tags", cfgShowTags->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowTags);
-    sautils->AddClickableItem(settingTab, "Show Camera Snapshots", cfgShowSnapshots->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowSnapshots);
-    sautils->AddClickableItem(settingTab, "Show Horseshoes", cfgShowHorseshoes->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowHorseshoes);
-    sautils->AddClickableItem(settingTab, "Show Oysters", cfgShowOysters->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowOysters);
-    sautils->AddClickableItem(settingTab, "Show Stunt Jumps", cfgShowStuntJumps->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowStuntJumps);
-    sautils->AddClickableItem(settingTab, "Show the Nearest", cfgShowNearest->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowNearest);
-    sautils->AddClickableItem(settingTab, "Show Bribes", cfgShowBribes->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowBribes);
-    sautils->AddClickableItem(settingTab, "Show Armours", cfgShowArmours->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowArmours);
-    sautils->AddClickableItem(settingTab, "Show Weapons", cfgShowWeapons->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowWeapons);
+
+    // That's how you can use AML interface
+    // If your mod can work without specified mod,
+    // save the result of this function and use it anywhere you need
+    // (if necessary). This line says "do we have a mod SAUtils of version equal 1.5.1 or newer"
+    if(aml->HasModOfVersion("net.rusjj.gtasa.utils", "1.5.1"))
+    {
+        eTypeOfSettings settingTab = sautils->AddSettingsTab("Collectibles On Radar");
+        
+        sautils->AddClickableItem(settingTab, "Show Spray Tags", cfgShowTags->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowTags);
+        sautils->AddClickableItem(settingTab, "Show Camera Snapshots", cfgShowSnapshots->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowSnapshots);
+        sautils->AddClickableItem(settingTab, "Show Horseshoes", cfgShowHorseshoes->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowHorseshoes);
+        sautils->AddClickableItem(settingTab, "Show Oysters", cfgShowOysters->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowOysters);
+        sautils->AddClickableItem(settingTab, "Show Stunt Jumps", cfgShowStuntJumps->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowStuntJumps);
+        sautils->AddClickableItem(settingTab, "Show the Nearest", cfgShowNearest->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowNearest);
+        sautils->AddClickableItem(settingTab, "Show Bribes", cfgShowBribes->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowBribes);
+        sautils->AddClickableItem(settingTab, "Show Armours", cfgShowArmours->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowArmours);
+        sautils->AddClickableItem(settingTab, "Show Weapons", cfgShowWeapons->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowWeapons);
+    }
 }
