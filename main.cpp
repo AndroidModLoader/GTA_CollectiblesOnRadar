@@ -14,7 +14,7 @@ ISAUtils* sautils = NULL;
 #endif
 #define sizeofA(__aVar)  ((int)(sizeof(__aVar)/sizeof(__aVar[0])))
 
-MYMOD(net.kong78.rusjj.cor, Collectibles on Radar, 1.0, kong78 & RusJJ)
+MYMOD(net.kong78.rusjj.cor, Collectibles on Radar, 1.1, kong78 & RusJJ)
 BEGIN_DEPLIST()
     ADD_DEPENDENCY_VER(net.rusjj.aml, 1.0.2.2)
 END_DEPLIST()
@@ -30,7 +30,7 @@ void* hGTASA;
 //////      Variables
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
-#define HEIGHT_DELTA 2.0f
+#define HEIGHT_DELTA 1.8f
 MobileMenu *gMobileMenu;
 float *m_radarRange;
 int *ms_numTags;
@@ -233,7 +233,7 @@ inline bool IsAllowedCollectible(int model, int type)
 inline bool IsAllowedPickup(int model, int type)
 {
     if(type != PICKUP_ON_STREET && type != PICKUP_ON_STREET_SLOW) return false;
-    return (ShowBribes && model == 1247) || (ShowArmours && model == 1247) || (ShowWeapons && model >= 321 && model <= 372);
+    return (ShowBribes && model == 1247) || (ShowArmours && model == 1242) || (ShowWeapons && model >= 321 && model <= 372);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -453,7 +453,8 @@ extern "C" void OnAllModsLoaded()
     hGTASA = aml->GetLibHandle("libGTASA.so");
 
     // We dont cheat in multiplayer games.
-    if(aml->GetLibHandle("libsamp.so") != NULL || aml->GetLibHandle("libvoice.so") != NULL || aml->GetLibHandle("libAlyn_SAMPMOBILE.so") != NULL || aml->HasMod("net.rusjj.resamp")) return;
+    if(aml->GetLibHandle("libsamp.so") != NULL || aml->GetLibHandle("libvoice.so") != NULL ||
+       aml->GetLibHandle("libAlyn_SAMPMOBILE.so") != NULL || aml->HasMod("net.rusjj.resamp")) return;
 
     sautils = (ISAUtils*)GetInterface("SAUtils");
 
