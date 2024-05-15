@@ -14,7 +14,7 @@ ISAUtils* sautils = NULL;
 #endif
 #define sizeofA(__aVar)  ((int)(sizeof(__aVar)/sizeof(__aVar[0])))
 
-MYMOD(net.kong78.rusjj.cor, Collectibles on Radar, 1.1, kong78 & RusJJ)
+MYMOD(net.kong78.rusjj.cor, Collectibles on Radar, 1.2, kong78 & RusJJ)
 BEGIN_DEPLIST()
     ADD_DEPENDENCY_VER(net.rusjj.aml, 1.0.2.2)
 END_DEPLIST()
@@ -30,13 +30,14 @@ void* hGTASA;
 //////      Variables
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
-#define HEIGHT_DELTA 1.8f
+#define HEIGHT_DELTA 1.7f
 MobileMenu *gMobileMenu;
 float *m_radarRange;
 int *ms_numTags;
 tTagDesc *ms_tagDesc;
 CPool<CStuntJump> **mp_poolStuntJumps;
 CPickup *aPickUps;
+CPlayerInfo *WorldPlayers;
 
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -233,7 +234,7 @@ inline bool IsAllowedCollectible(int model, int type)
 inline bool IsAllowedPickup(int model, int type)
 {
     if(type != PICKUP_ON_STREET && type != PICKUP_ON_STREET_SLOW) return false;
-    return (ShowBribes && model == 1247) || (ShowArmours && model == 1242) || (ShowWeapons && model >= 321 && model <= 372);
+    return (ShowBribes && model == 1247) || (ShowArmours && model == 1242) || (ShowWeapons && model >= 321 && model <= 372 && model != 370);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -415,26 +416,30 @@ DECL_HOOKv(DrawRadarBlips, float circleSize)
 {
     DrawRadarBlips(circleSize);
 
-    if(!EnableMod) return; // Dont do any of the code below this line
-    CPlayerPed* player = FindPlayerPed(-1);
-    if(player)
+    // Dont do any of the code below this line
+    if(!EnableMod) return;
+    
+  #ifdef AML32
+    CPlayerPed* player = WorldPlayers[0].m_pPed;
+    CVector& playerPos = (WorldPlayers[0].m_pRemoteVehicle) ? WorldPlayers[0].m_pRemoteVehicle->GetPosition() : player->GetPosition();
+  #else
+    CPlayerPed* player = WorldPlayers[0].pPed;
+    CVector& playerPos = (WorldPlayers[0].pRemoteVehicle) ? WorldPlayers[0].pRemoteVehicle->GetPosition() : player->GetPosition();
+  #endif
+    if(gMobileMenu->m_bDrawMenuMap)
     {
-        CVector& playerPos = player->GetPosition();
-        if(gMobileMenu->m_bDrawMenuMap)
+        bool showHeight = player->m_nInterior == 0;
+        if(ShowTags) Map_DrawTags(playerPos, showHeight);
+        if(ShowStuntJumps) Map_DrawStuntJumps(playerPos, showHeight);
+        Map_DrawPickups(playerPos, showHeight);
+    }
+    else
+    {
+        if(player->m_nInterior == 0)
         {
-            bool showHeight = player->m_nInterior == 0;
-            if(ShowTags) Map_DrawTags(playerPos, showHeight);
-            if(ShowStuntJumps) Map_DrawStuntJumps(playerPos, showHeight);
-            Map_DrawPickups(playerPos, showHeight);
-        }
-        else
-        {
-            if(player->m_nInterior == 0)
-            {
-                if(ShowTags) Radar_DrawTags(playerPos);
-                if(ShowStuntJumps) Radar_DrawStuntJumps(playerPos);
-                Radar_DrawPickups(playerPos);
-            }
+            if(ShowTags) Radar_DrawTags(playerPos);
+            if(ShowStuntJumps) Radar_DrawStuntJumps(playerPos);
+            Radar_DrawPickups(playerPos);
         }
     }
 }
@@ -464,6 +469,7 @@ extern "C" void OnAllModsLoaded()
     SET_TO(ms_tagDesc, aml->GetSym(hGTASA, "_ZN11CTagManager10ms_tagDescE"));
     SET_TO(mp_poolStuntJumps, aml->GetSym(hGTASA, "_ZN17CStuntJumpManager17mp_poolStuntJumpsE"));
     SET_TO(aPickUps, *(uintptr_t*)(pGTASA + BYVER(0x678BF8, 0x84F818)));
+    SET_TO(WorldPlayers, *(uintptr_t*)(pGTASA + BYVER(0x6783C8, 0x84E7A8)));
 
     SET_TO(FindPlayerPed, aml->GetSym(hGTASA, "_Z13FindPlayerPedi"));
     SET_TO(ShowRadarTraceWithHeight, aml->GetSym(hGTASA, "_ZN6CRadar24ShowRadarTraceWithHeightEffjhhhhh"));
