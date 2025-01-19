@@ -14,7 +14,7 @@ ISAUtils* sautils = NULL;
 #endif
 #define sizeofA(__aVar)  ((int)(sizeof(__aVar)/sizeof(__aVar[0])))
 
-MYMOD(net.kong78.rusjj.cor, Collectibles on Radar, 1.2, kong78 & RusJJ)
+MYMOD(net.kong78.rusjj.cor, Collectibles on Radar, 1.3, kong78 & RusJJ)
 BEGIN_DEPLIST()
     ADD_DEPENDENCY_VER(net.rusjj.aml, 1.0.2.2)
 END_DEPLIST()
@@ -93,6 +93,7 @@ inline void Radar_DrawTags(const CVector& center)
         if (distance < radarRange)
         {
             TransformRealWorldPointToRadarSpace(radarSpace, tagPos.m_vec2D);
+            LimitRadarPoint(radarSpace);
             TransformRadarPointToScreenSpace(screenSpace, radarSpace);
 
             drawTag = false;
@@ -167,6 +168,7 @@ inline void Radar_DrawStuntJumps(const CVector& center)
         if (distance < radarRange)
         {
             TransformRealWorldPointToRadarSpace(radarSpace, tagPos.m_vec2D);
+            LimitRadarPoint(radarSpace);
             TransformRadarPointToScreenSpace(screenSpace, radarSpace);
 
             drawTag = false;
@@ -266,6 +268,7 @@ inline void Radar_DrawPickups(const CVector& center)
             if(distance < radarRange)
             {
                 TransformRealWorldPointToRadarSpace(radarSpace, pickupPos.m_vec2D);
+                LimitRadarPoint(radarSpace);
                 TransformRadarPointToScreenSpace(screenSpace, radarSpace);
 
                 float heightDiff = pickupPos.z - center.z;
