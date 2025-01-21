@@ -236,7 +236,7 @@ inline bool IsAllowedCollectible(int model, int type)
 inline bool IsAllowedPickup(int model, int type)
 {
     if(type != PICKUP_ON_STREET && type != PICKUP_ON_STREET_SLOW) return false;
-    return (ShowBribes && model == 1247) || (ShowArmours && model == 1242) || (ShowWeapons && model >= 321 && model <= 372 && model != 370);
+    return (ShowBribes && model == 1247) || (ShowHealths && model == 1240) || (ShowArmours && model == 1242) || (ShowWeapons && model >= 321 && model <= 372 && model != 370);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -291,6 +291,9 @@ inline void Radar_DrawPickups(const CVector& center)
                         break;
                     case 1242:
                         DrawRadarTrace(screenSpace.x, screenSpace.y, heightDiff, ArmoursColor);
+                        break;
+                    case 1240:
+                        DrawRadarTrace(screenSpace.x, screenSpace.y, heightDiff, HealthsColor);
                         break;
                     default:
                         DrawRadarTrace(screenSpace.x, screenSpace.y, heightDiff, WeaponsColor);
@@ -400,6 +403,10 @@ inline void Map_DrawPickups(const CVector& center, bool showHeight)
                 case 1242:
                     if(showHeight) DrawRadarTrace(screenSpace.x, screenSpace.y, heightDiff, ArmoursColor);
                     else DrawRadarTrace(screenSpace.x, screenSpace.y, ArmoursColor);
+                    break;
+                case 1240:
+                    if(showHeight) DrawRadarTrace(screenSpace.x, screenSpace.y, heightDiff, HealthsColor);
+                    else DrawRadarTrace(screenSpace.x, screenSpace.y, HealthsColor);
                     break;
                 default:
                     if(showHeight) DrawRadarTrace(screenSpace.x, screenSpace.y, heightDiff, WeaponsColor);

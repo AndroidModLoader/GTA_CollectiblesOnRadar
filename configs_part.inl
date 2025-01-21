@@ -17,6 +17,7 @@ enum eSettingToChange : unsigned char
     STC_ShowBribes,
     STC_ShowArmours,
     STC_ShowWeapons,
+    STC_ShowHealths,
 };
 
 ConfigEntry *cfgEnableMod; bool EnableMod;
@@ -29,6 +30,7 @@ ConfigEntry *cfgShowNearest; bool ShowNearest;
 ConfigEntry *cfgShowBribes; bool ShowBribes;
 ConfigEntry *cfgShowArmours; bool ShowArmours;
 ConfigEntry *cfgShowWeapons; bool ShowWeapons;
+ConfigEntry *cfgShowHealths; bool ShowHealths;
 
 rgba_t TagsColor {0x55, 0xFF, 0x55, 0xFF};
 rgba_t SnapshotsColor {0xFF, 0xA1, 0xD0, 0xFF};
@@ -38,6 +40,7 @@ rgba_t StuntJumpsColor {0xCC, 0x99, 0xFF, 0xFF};
 rgba_t BribesColor {0xFF, 0xFF, 0x00, 0xA0};
 rgba_t ArmoursColor {0xFF, 0xFF, 0xFF, 0xA0};
 rgba_t WeaponsColor {0xFF, 0x00, 0xFF, 0xA0};
+rgba_t HealthsColor {0xFF, 0x00, 0x00, 0xA0};
 
 void OnSettingChange(int oldVal, int newVal, void* data)
 {
@@ -104,6 +107,12 @@ void OnSettingChange(int oldVal, int newVal, void* data)
             cfgShowWeapons->SetBool(newVal != 0);
             break;
         }
+        case STC_ShowHealths:
+        {
+            ShowHealths = newVal != 0;
+            cfgShowHealths->SetBool(newVal != 0);
+            break;
+        }
     }
     cfg->Save();
 }
@@ -120,6 +129,7 @@ void InitializeConfigsPart()
     cfgShowBribes = cfg->Bind("show_bribes", false, "EXTRA"); ShowBribes = cfgShowBribes->GetBool();
     cfgShowArmours = cfg->Bind("show_armours", false, "EXTRA"); ShowArmours = cfgShowArmours->GetBool();
     cfgShowWeapons = cfg->Bind("show_weapons", false, "EXTRA"); ShowWeapons = cfgShowWeapons->GetBool();
+    cfgShowHealths = cfg->Bind("show_healths", false, "EXTRA"); ShowHealths = cfgShowHealths->GetBool();
 
     TagsColor = cfg->GetColor("color_tag", TagsColor, "COLORS");
     SnapshotsColor = cfg->GetColor("color_snapshot", SnapshotsColor, "COLORS");
@@ -129,6 +139,7 @@ void InitializeConfigsPart()
     BribesColor = cfg->GetColor("color_bribe", BribesColor, "EXTRA");
     ArmoursColor = cfg->GetColor("color_armour", ArmoursColor, "EXTRA");
     WeaponsColor = cfg->GetColor("color_weapon", WeaponsColor, "EXTRA");
+    HealthsColor = cfg->GetColor("color_health", HealthsColor, "EXTRA");
 }
 
 void InitializeSAUtilsPart()
@@ -152,5 +163,6 @@ void InitializeSAUtilsPart()
         sautils->AddClickableItem(settingTab, "Show Bribes", cfgShowBribes->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowBribes);
         sautils->AddClickableItem(settingTab, "Show Armours", cfgShowArmours->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowArmours);
         sautils->AddClickableItem(settingTab, "Show Weapons", cfgShowWeapons->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowWeapons);
+        sautils->AddClickableItem(settingTab, "Show Healths (On Missions)", cfgShowHealths->GetInt(), 0, sizeofA(pYesNo)-1, pYesNo, OnSettingChange, (void*)STC_ShowHealths);
     }
 }
